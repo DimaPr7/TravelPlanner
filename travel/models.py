@@ -7,6 +7,12 @@ class TravelProject(models.Model):
     start_date = models.DateField(null=True, blank=True)
     completed = models.BooleanField(default=False)
 
+    def update_completion(self):
+        places = self.places.all()
+        if places.exists() and all(p.visited for p in places):
+            self.completed = True
+            self.save()
+
 
 class ProjectPlace(models.Model):
     project = models.ForeignKey(
